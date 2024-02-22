@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
+  "scripts": {
+    "build": "ts-node src/index.ts",
+    "dev": "nodemon"
+  },
   "devDependencies": {
     "@types/node": "^20.11.19",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "viem": "^2.7.12"
   }
 }
