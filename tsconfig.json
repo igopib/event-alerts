@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "baseUrl": "./src",
     "paths": {
@@ -11,6 +13,10 @@
     "outDir": "./build",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noImplicitReturns": true,
     "skipLibCheck": true
   },
   "ts-node": {
