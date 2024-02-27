@@ -20,9 +20,9 @@ const client = new Client({
 });
 
 await publicClient.watchEvent({
-  address: '0x9502eA04e9d65F342C26BCA1FAa67Db9a6b45f85',
+  address: '0x0bf570dd80Aa5AF57C6d0Eacd59512237b25a6FB',
   event: parseAbiItem(
-    "event Deposit(address indexed sender, uint256 indexed tokenId, uint256 principal, uint256 maturity, address token)",
+    "event Deposit(address indexed sender, uint256 indexed tokenId, uint256 principal, uint256 maturity, address token, uint256 bondFee)",
   ),
   onLogs: (logs: any) => {
     savedLogs = [];
