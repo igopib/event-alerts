@@ -1,8 +1,7 @@
 import { Client, GatewayIntentBits, TextChannel } from "discord.js";
 import { parseAbiItem, stringify } from "viem";
-import { publicClient } from "./client";
+import { publicClient } from "./client.js";
 import "dotenv/config";
-import { channel } from "diagnostics_channel";
 
 interface BondDetails {
   from: string;

@@ -5,8 +5,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "ts-node src/index.ts",
-    "dev": "nodemon"
+    "build": "tsc",
+    "dev": "nodemon",
+    "start": "node build/src/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
