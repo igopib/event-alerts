@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "start": "node build/src/index.js"
+    "start": "tsc && node build/src/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
