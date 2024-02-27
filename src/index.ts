@@ -1,32 +1,62 @@
-import { Client, GatewayIntentBits, SlashCommandBuilder } from 'discord.js'
-import { formatEther, parseAbiItem } from 'viem'
-import { publicClient } from './client'
-import { abi } from '../utils/abi'
+import { Client, GatewayIntentBits, TextChannel } from "discord.js";
+import { parseAbiItem, stringify } from "viem";
+import { publicClient } from "./client";
+import "dotenv/config";
+import { channel } from "diagnostics_channel";
 
-import 'dotenv/config'
+interface BondDetails {
+  from: string;
+  to: string;
+  value: string;
+}
 
+let savedLogs: BondDetails[] = [];
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers],
-})
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+  ],
+});
 
-// const logs = await publicClient.watchEvent({
-//   address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-//   abi: abi,
-//   eventName: 'Approval',
-// })
+await publicClient.watchEvent({
+  address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+  event: parseAbiItem(
+    "event Approval(address indexed from, address indexed to, uint value)",
+  ),
+  onLogs: (logs: any) => {
+    savedLogs = [];
+    logs.forEach((log: any) => {
+      savedLogs.push(log.args); // Push the args property of each log object into savedLogs
+    });
+    sendMessage();
+  },
+});
 
-const unwatch = publicClient.watchEvent({
-  address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-  event: parseAbiItem('event Approval(address indexed from, address indexed to, uint value)'),
-  onLogs: (logs: any) => console.log(logs),
-})
+function sendMessage() {
+  console.log(
+    "----------------------------------------------------------------",
+  );
+  console.log(savedLogs);
+  const channel = client.channels.cache.get(
+    "1205801154282266675",
+  ) as TextChannel;
+  if (!channel) {
+    console.error("Channel not found");
+    return;
+  }
+  try {
+    savedLogs.forEach((data) => {
+      const message = `__**New Approval**__ \n From: ${data.from}\nTo: ${data.to}`;
+      channel.send(message);
+    });
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
+}
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user?.tag}!`)
-})
-// client.on('messageCreate', async (message) => {
-//   if (message.content === 'log') {
-//     message.reply(logs)
-//   }
-// })
-client.login(process.env.TOKEN)
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user?.tag}!`);
+});
+client.login(process.env.TOKEN);
